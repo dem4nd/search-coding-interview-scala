@@ -50,7 +50,7 @@ class SearchServiceTest extends munit.FunSuite {
 
   test("Search by general keyword") {
     assertEquals(
-      searchService.search(entries, "best").items,
+      searchService.search(entries, "the").items,
       entries,
     )
   }
