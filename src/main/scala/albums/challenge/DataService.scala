@@ -14,7 +14,6 @@ import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import java.nio.charset.StandardCharsets
 import scala.jdk.CollectionConverters._
 
-
 @Service
 class DataService {
   private val logger: Logger = LogManager.getLogger(classOf[DataService])
@@ -47,7 +46,7 @@ class DataService {
     Option(restTemplate.getForObject(uri, classOf[Data])) match {
       case Some(data) =>
         data.convert()
-      case None       =>
+      case None =>
         throw new IllegalStateException("Failed to fetch data")
     }
   }

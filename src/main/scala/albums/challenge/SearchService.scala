@@ -26,12 +26,15 @@ class SearchService {
     val augmentedEntries = filteredByQuery.map(AugmentedEntry.apply)
 
     val filteredByYears = augmentedEntries.filter(e =>
-      enteredYears.exists(e.yearParsed.contains) || enteredYears.isEmpty)
+      enteredYears.exists(e.yearParsed.contains) || enteredYears.isEmpty,
+    )
 
     val filteredByRanges = augmentedEntries.filter(e =>
-      enteredRanges.exists(e.priceRange.contains) || enteredRanges.isEmpty)
+      enteredRanges.exists(e.priceRange.contains) || enteredRanges.isEmpty,
+    )
 
-    val priceFacets = filteredByYears.flatMap(_.priceRange)
+    val priceFacets = filteredByYears
+      .flatMap(_.priceRange)
       .distinct
       .sortBy(_.upperBoundary)
       .map { r =>
@@ -49,16 +52,16 @@ class SearchService {
 
     val facetsMap = List(
       "price" -> priceFacets,
-      "year" -> yearFacets
-    ).filterNot(_._2.isEmpty)
-      .toMap
+      "year" -> yearFacets,
+    ).filterNot(_._2.isEmpty).toMap
 
     Results(
-      items = filteredByYears.intersect(filteredByRanges)
+      items = filteredByYears
+        .intersect(filteredByRanges)
         .sortBy(_.original.price)
         .map(_.original),
       facets = facetsMap,
-      query = query
+      query = query,
     )
   }
 }

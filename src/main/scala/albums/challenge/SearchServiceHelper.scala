@@ -21,16 +21,14 @@ object SearchServiceHelper {
   object PriceRange {
     def exactRange(price: Float): Option[PriceRange] =
       Option.when(price >= 0.0f)(
-        PriceRange(((price.toInt / rangeSize) + 1) * rangeSize)
+        PriceRange(((price.toInt / rangeSize) + 1) * rangeSize),
       )
 
     def ranges(price: Float): Set[PriceRange] =
       List(
         exactRange(price),
-        exactRange((price + roundPrecision).toInt.toFloat)
-      )
-        .flatten
-        .toSet
+        exactRange((price + roundPrecision).toInt.toFloat),
+      ).flatten.toSet
   }
 
   case class AugmentedEntry(original: Entry, yearParsed: Option[Int], priceRange: Set[PriceRange])

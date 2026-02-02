@@ -13,13 +13,11 @@ import org.apache.logging.log4j.{LogManager, Logger}
 
 import scala.jdk.CollectionConverters.CollectionHasAsScala
 
-
 @Configuration
 class JacksonConfig {
   @Bean
   def defaultScalaModule(): com.fasterxml.jackson.databind.Module = DefaultScalaModule
 }
-
 
 @SpringBootApplication
 @RestController
@@ -47,17 +45,18 @@ class Application @Autowired() (
 
     val logQueryMsg = {
       List(
-        Some(query).filterNot(_.isEmpty)
-          .orElse(Some("<Not specifyed>"))
+        Some(query)
+          .filterNot(_.isEmpty)
+          .orElse(Some("<Not specified>"))
           .map(q => s"Query: '$q'"),
         year.asScala.filterNot(_.isEmpty) match {
-          case Nil => Option.empty[String]
+          case Nil           => Option.empty[String]
           case notEmptyYears => Some(notEmptyYears.mkString("year: ", ", ", ""))
         },
         price.asScala.filterNot(_.isEmpty) match {
-          case Nil => Option.empty[String]
+          case Nil            => Option.empty[String]
           case notEmptyPrices => Some(notEmptyPrices.mkString("price: ", ", ", ""))
-        }
+        },
       ).flatten
         .mkString("; ")
     }
