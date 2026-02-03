@@ -49,7 +49,7 @@ class Application @Autowired() (
         Some(query)
           .filterNot(_.isEmpty)
           .orElse(Some("<Not specified>"))
-          .map(q => s"Query: '$q'"),
+          .map(q => s"query: '$q'"),
         year.asScala.filterNot(_.isEmpty) match {
           case Nil           => Option.empty[String]
           case notEmptyYears => Some(notEmptyYears.mkString("year: ", ", ", ""))
