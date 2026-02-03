@@ -30,6 +30,30 @@ class Application @Autowired() (
 
   private val logger: Logger = LogManager.getLogger(classOf[Application])
 
+  def logSearchRequestParams(
+      query: String,
+      year: java.util.List[String],
+      price: java.util.List[String],
+  ): Unit = {
+    val logQueryMsg =
+      List(
+        Some(query)
+          .filterNot(_.isEmpty)
+          .orElse(Some("<Not specified>"))
+          .map(q => s"query: '$q'"),
+        year.asScala.filterNot(_.isEmpty) match {
+          case Nil           => Option.empty[String]
+          case notEmptyYears => Some(notEmptyYears.mkString("year: ", ", ", ""))
+        },
+        price.asScala.filterNot(_.isEmpty) match {
+          case Nil            => Option.empty[String]
+          case notEmptyPrices => Some(notEmptyPrices.mkString("price: ", ", ", ""))
+        },
+      ).flatten.mkString("; ")
+
+    logger.info(s"Search with $logQueryMsg")
+  }
+
   @GetMapping(Array("/"))
   def index(): ModelAndView = {
     val modelAndView = new ModelAndView()
@@ -44,31 +68,14 @@ class Application @Autowired() (
       @RequestParam(defaultValue = "") price: java.util.List[String],
   ): Results = {
 
-    val logQueryMsg = {
-      List(
-        Some(query)
-          .filterNot(_.isEmpty)
-          .orElse(Some("<Not specified>"))
-          .map(q => s"query: '$q'"),
-        year.asScala.filterNot(_.isEmpty) match {
-          case Nil           => Option.empty[String]
-          case notEmptyYears => Some(notEmptyYears.mkString("year: ", ", ", ""))
-        },
-        price.asScala.filterNot(_.isEmpty) match {
-          case Nil            => Option.empty[String]
-          case notEmptyPrices => Some(notEmptyPrices.mkString("price: ", ", ", ""))
-        },
-      ).flatten
-        .mkString("; ")
-    }
-
-    logger.info(s"Search with $logQueryMsg")
+// Uncomment to enable query logging
+//    logSearchRequestParams(query, year, price)
 
     searchService.search(
-      dataService.fetch(),
-      query,
-      year.asScala.toList,
-      price.asScala.toList,
+      entries = dataService.fetch(),
+      query = query,
+      year = year.asScala.toList,
+      price = price.asScala.toList,
     )
   }
 }
