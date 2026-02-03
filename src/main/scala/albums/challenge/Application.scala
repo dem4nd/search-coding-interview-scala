@@ -1,6 +1,9 @@
 package albums.challenge
 
 import albums.challenge.models.Results
+import albums.challenge.search.SearchService
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import org.apache.logging.log4j.{LogManager, Logger}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -8,8 +11,6 @@ import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.{Bean, Configuration}
 import org.springframework.web.bind.annotation.{GetMapping, RequestParam, RestController}
 import org.springframework.web.servlet.ModelAndView
-import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import org.apache.logging.log4j.{LogManager, Logger}
 
 import scala.jdk.CollectionConverters.CollectionHasAsScala
 

@@ -1,15 +1,14 @@
 package albums.challenge
 
 import albums.challenge.models.{Data, Entry}
+import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper}
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import org.apache.logging.log4j.{LogManager, Logger}
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.http.MediaType
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
-
-import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper}
-import com.fasterxml.jackson.module.scala.DefaultScalaModule
 
 import java.nio.charset.StandardCharsets
 import scala.jdk.CollectionConverters._
